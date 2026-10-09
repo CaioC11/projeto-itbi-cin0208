@@ -18,9 +18,23 @@ Problema formulado como tarefa de **regressão**.
 
 ## Datas importantes
 
-- **08/10** — Checkpoint 1 (apresentação de andamento)
+- **15/10** — Checkpoint 1 (apresentação de andamento)
 - **19/11** — Acompanhamento final
 - **26/11** — Apresentação final
+
+## Checkpoint 15/10: funções da semana
+
+Trabalho assíncrono, sem reuniões, exceto o ensaio na quarta 14/10. Prazo interno: terça 13/10 à noite, com tudo no repositório.
+
+| Função | Responsável | Entregável |
+|---|---|---|
+| Coordenação, repositório e apresentação | [Nome] | Repo organizado, Kanban, plano de experimentos, slides integrados |
+| EDA da variável alvo (`valor_avaliacao`) | [Nome] | `01a_eda_alvo.ipynb` |
+| EDA das variáveis numéricas | [Nome] | `01b_eda_numericas.ipynb` |
+| EDA das categóricas e valores faltantes | [Nome] | `01c_eda_categoricas.ipynb` |
+| Pipeline, baseline e primeiro kNN | [Nome] | `04_pipeline_experimentos.ipynb` |
+
+Convenções: uma branch por tarefa (`eda-alvo`, `eda-numericas`, `eda-categoricas`, `pipeline`), um notebook por pessoa, e merge na `main` só com o notebook rodando do zero.
 
 ## Dataset
 
@@ -31,25 +45,36 @@ Problema formulado como tarefa de **regressão**.
 ## Estrutura do repositório
 
 ```
-projeto-itbi/
+projeto-itbi-cin0208/
 ├── data/
 │   ├── raw/            # dataset original, sem modificações
 │   └── processed/      # dataset(s) após limpeza/preprocessing
 ├── notebooks/
-│   ├── 01_eda.ipynb
-│   ├── 02_encoding_selecao.ipynb
-│   ├── 03_normalizacao_pca.ipynb
-│   ├── 04_pipeline_experimentos.ipynb
-│   └── 05_analise_resultados.ipynb
-├── src/                 # funções compartilhadas (preprocessing, métricas, etc.)
-├── resultados/           # tabela consolidada dos 150+ experimentos
+│   ├── 01a_eda_alvo.ipynb
+│   ├── 01b_eda_numericas.ipynb
+│   ├── 01c_eda_categoricas.ipynb
+│   └── 04_pipeline_experimentos.ipynb
+├── src/
+│   └── carregar_dados.py   # leitura padronizada do CSV (usar sempre)
+├── resultados/         # tabelas e gráficos de resultados
 ├── requirements.txt
 └── README.md
 ```
 
+Os demais notebooks serão definidos após a EDA.
+
 ## Ambiente
 
-Ver `requirements.txt`. Seed fixa usada em todo o projeto: `random_state=42`.
+- Python **3.10 a 3.12**.
+- Instalação: `pip install -r requirements.txt`.
+- Seed fixa usada em todo o projeto: `random_state=42`.
+- O CSV usa `;` como separador e mistura vírgula e ponto decimal. **Carregar os dados sempre com `carregar_dados()`** de `src/carregar_dados.py`, em vez de `pd.read_csv` direto:
+
+```python
+from src.carregar_dados import carregar_dados
+
+df = carregar_dados()
+```
 
 ## Decisões do projeto
 
@@ -58,12 +83,6 @@ pré-processamento/modelagem), com o formato:
 
 > Decidi X porque Y. Alternativa considerada: Z (descartada porque ...).
 
-## Divisão de trabalho
+## Etapas finais (a definir após a EDA)
 
-| Etapa | Responsável |
-|---|---|
-| 1. EDA + pré-processamento base | |
-| 2. Encoding + seleção de atributos | |
-| 3. Normalização + redução de dimensionalidade | |
-| 4. Pipeline experimental + kNN | |
-| 5. Análise de resultados + relatório | |
+A divisão das etapas finais (encoding, seleção de atributos, normalização, experimentos e análise de resultados) será definida depois da EDA, possivelmente após o checkpoint de 15/10.
