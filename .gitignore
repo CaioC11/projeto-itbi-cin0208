@@ -29,3 +29,6 @@ tempCodeRunnerFile.py
 # Sistema operacional
 .DS_Store
 Thumbs.db
+# Ambiente de validação e cópias executadas
+.venv-validacao/
+resultados/notebooks/
