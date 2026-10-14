@@ -1,0 +1,4 @@
+modelo,mae_media,mae_desvio,rmse_media,rmse_desvio,mape_media,mape_desvio,r2_media,r2_desvio
+Média (em log),414136.389,42036.87,2300199.367,870618.424,0.747,0.05,-0.016,0.008
+kNN k=5 sem escala,200655.941,30472.819,1540954.22,709700.651,0.277,0.037,0.556,0.124
+kNN k=5 com escala,173684.035,23413.7,1063565.595,291850.718,0.251,0.033,0.741,0.133
