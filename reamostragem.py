@@ -1,5 +1,6 @@
 import numpy as np
 from relevancia import relevancia_cauda_direita
+from sklearn.neighbors import NearestNeighbors
 
 
 def _separar(y_log, limiar=0.5):
@@ -45,6 +46,29 @@ def ruido_gaussiano(X, y_log, limiar=0.5, fator=2, sigma=0.05, seed=42):
     X_novo = X[escolhidos] + ruido
     return np.vstack([X, X_novo]), np.concatenate([y_log, y_log[escolhidos]])
 
+def smoter(X, y_log, limiar=0.5, fator=2, k=5, seed=42):
+    
+    #Cria linhas novas entre pares de linhas raras vizinhas (X e y interpolados)
+    rng = np.random.default_rng(seed)
+    X = np.asarray(X, dtype=float)
+    y_log = np.asarray(y_log)
+    raros, _ = _separar(y_log, limiar)
+    k = min(k, len(raros) - 1)
+
+    vizinhos = NearestNeighbors(n_neighbors=k + 1).fit(X[raros])
+    _, ind = vizinhos.kneighbors(X[raros])
+
+    n_novos = len(raros) * (fator - 1)
+    bases = rng.integers(0, len(raros), size=n_novos)
+    pares = ind[bases, rng.integers(1, k + 1, size=n_novos)]
+    u = rng.random(n_novos)
+
+    Xa, Xb = X[raros[bases]], X[raros[pares]]
+    ya, yb = y_log[raros[bases]], y_log[raros[pares]]
+    X_novo = Xa + u[:, None] * (Xb - Xa)
+    y_novo = ya + u * (yb - ya)
+    return np.vstack([X, X_novo]), np.concatenate([y_log, y_novo])
+
 
 if __name__ == "__main__":
     rng = np.random.default_rng(0)
@@ -65,7 +89,14 @@ if __name__ == "__main__":
     assert Xr.shape == (len(yr), X.shape[1])
     assert not np.allclose(Xr[len(y):], X[np.argsort(y)[-len(raros):]])
 
+    Xm, ym = smoter(X, y)
+    assert len(ym) == len(y) + len(raros)
+    assert Xm.shape == (len(ym), X.shape[1])
+    novos = ym[len(y):]
+    assert novos.min() >= y[raros].min() and novos.max() <= y[raros].max()
+
     print("reamostragem ok")
     print("original:", len(y), "| raras:", len(raros))
     print("sobre:", len(ys), "| sub:", len(yu))
     print("ruído:", len(yr))
+    print("smoter:", len(ym))
