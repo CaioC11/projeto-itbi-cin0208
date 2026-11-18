@@ -3,6 +3,7 @@ from relevancia import relevancia_cauda_direita
 from sklearn.neighbors import NearestNeighbors
 
 
+
 def _separar(y_log, limiar=0.5):
     
     #Divide as linhas em raras (nota >= limiar) e comuns (nota < limiar)
@@ -69,6 +70,27 @@ def smoter(X, y_log, limiar=0.5, fator=2, k=5, seed=42):
     y_novo = ya + u * (yb - ya)
     return np.vstack([X, X_novo]), np.concatenate([y_log, y_novo])
 
+def smogn_reamostrar(X, y_log, rel_thres=0.5, k=5, pert=0.02):
+    
+    #Adaptador do smogn: X (matriz) e y_log entram, X e y_log reamostrados saem
+    import pandas as pd
+    import smogn
+
+    X = np.asarray(X, dtype=float)
+    y_log = np.asarray(y_log, dtype=float)
+    colunas = [f"x{i}" for i in range(X.shape[1])]
+    df = pd.DataFrame(X, columns=colunas)
+    df["y"] = y_log
+
+    p75, p95 = np.percentile(y_log, [75, 95])
+    pontos = [[y_log.min(), 0, 0], [p75, 0, 0], [p95, 1, 0], [y_log.max(), 1, 0]]
+
+    saida = smogn.smoter(
+        data=df, y="y", k=k, pert=pert, samp_method="balance",
+        rel_thres=rel_thres, rel_method="manual", rel_ctrl_pts_rg=pontos,
+    )
+    return saida[colunas].to_numpy(), saida["y"].to_numpy()
+
 
 if __name__ == "__main__":
     rng = np.random.default_rng(0)
@@ -94,6 +116,12 @@ if __name__ == "__main__":
     assert Xm.shape == (len(ym), X.shape[1])
     novos = ym[len(y):]
     assert novos.min() >= y[raros].min() and novos.max() <= y[raros].max()
+
+    for corte in (0.5, 0.8):
+        Xg, yg = smogn_reamostrar(X, y, rel_thres=corte)
+        assert Xg.shape[1] == X.shape[1] and Xg.shape[0] == len(yg)
+        assert not np.isnan(Xg).any() and not np.isnan(yg).any()
+        print(f"smogn {corte}:", len(yg))
 
     print("reamostragem ok")
     print("original:", len(y), "| raras:", len(raros))
