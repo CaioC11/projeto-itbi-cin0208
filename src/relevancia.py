@@ -26,7 +26,7 @@ if __name__ == "__main__":
     assert nota[y_treino <= np.percentile(y_treino, 75)].max() == 0
     assert nota[y_treino >= np.percentile(y_treino, 95)].min() == 1
     ordem = np.argsort(y_treino)
-    assert np.all(np.diff(nota[ordem]) >= 0)  # nunca diminui quando y aumenta
+    assert np.all(np.diff(nota[ordem]) >= 0)
 
     print("relevância ok")
     print("% com nota 0:", round((nota == 0).mean() * 100, 1))
