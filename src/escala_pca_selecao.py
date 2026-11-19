@@ -1,4 +1,3 @@
-# Escala, PCA e selecao de atributos — F3 (Eugenio)
 # F3-1: sem escala | Min-Max | Robust | Yeo-Johnson | log1p+Z-score
 # F3-2: info mutua 50/25% | teste F 50% | Spearman | variancia
 # F3-3: PCA 90% | 95% | 99% de variancia
