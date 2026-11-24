@@ -1,9 +1,9 @@
-import numpy as np
+﻿import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
 class FrequencyEncoding(BaseEstimator, TransformerMixin):
-    """Substitui cada categoria pela sua frequência relativa no treino."""
+    """Substitui cada categoria pela sua frequÃªncia relativa no treino."""
 
     def __init__(self, colunas):
         self.colunas = colunas
@@ -127,20 +127,16 @@ class OrdinalOrdenado(BaseEstimator, TransformerMixin):
 
         return X
 
-class TargetEncodingSuave(BaseEstimator, TransformerMixin):
-    # Implementação existente
-    ...
-
 class TargetEncodingForte(TargetEncodingSuave):
     def __init__(self, colunas, suavizacao=100):
         super().__init__(colunas, suavizacao)
-    """Target Encoding com suavização mais forte (padrão: 100)."""
+    """Target Encoding com suavizaÃ§Ã£o mais forte (padrÃ£o: 100)."""
 
     def __init__(self, colunas, suavizacao=100):
         super().__init__(colunas, suavizacao)
 
 class TargetEncodingSuave(BaseEstimator, TransformerMixin):
-    """Target Encoding com suavização em direção à média global do treino."""
+    """Target Encoding com suavizaÃ§Ã£o em direÃ§Ã£o Ã  mÃ©dia global do treino."""
 
     def __init__(self, colunas, suavizacao=10):
         self.colunas = colunas
@@ -184,7 +180,7 @@ class TratamentoFaltantes(BaseEstimator, TransformerMixin):
             'media'
         )
         if estrategia not in estrategias_validas:
-            raise ValueError(f'Estratégia inválida: {estrategia}')
+            raise ValueError(f'EstratÃ©gia invÃ¡lida: {estrategia}')
         self.estrategia = estrategia
 
     def fit(self, X, y=None):
