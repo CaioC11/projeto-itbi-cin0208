@@ -1,16 +1,4 @@
-"""Baseline e primeiro kNN (Projeto ITBI, CIN0208).
 
-Compara, com o protocolo do plano de experimentos (10-fold, random_state=42,
-alvo em log, pré-processamento ajustado dentro de cada fold):
-  1. Média (prevê sempre a média do alvo em log, ou seja, a média geométrica)
-  2. kNN k=5 sem escala
-  3. kNN k=5 com escala (StandardScaler)
-
-Uso (a partir da raiz do repositório):
-    python src/baseline.py
-
-Saída: tabela no terminal e resultados/baseline.csv
-"""
 import sys
 import warnings
 from pathlib import Path
@@ -31,7 +19,7 @@ warnings.filterwarnings("ignore")
 RAIZ = Path(__file__).resolve().parents[1]
 if str(RAIZ) not in sys.path:
     sys.path.insert(0, str(RAIZ))
-from src.carregar_dados import carregar_dados
+from src.limpeza import ALVO, carregar_e_limpar
 
 SEED = 42
 SAIDA = RAIZ / "resultados" / "baseline.csv"
@@ -40,19 +28,6 @@ NUMERICAS = ["ano_construcao", "area_terreno", "area_construida",
              "fracao_ideal", "sfh", "latitude", "longitude"]
 CATEGORICAS = ["bairro", "padrao_acabamento", "tipo_construcao",
                "tipo_ocupacao", "estado_conservacao", "tipo_imovel"]
-ALVO = "valor_avaliacao"
-
-
-def carregar_e_limpar():
-    """Lê o CSV com o carregador do repositório e aplica o pré-tratamento fixo
-    do plano de experimentos."""
-    df = carregar_dados()
-    df = df.drop_duplicates()  #301 linhas exatamente duplicadas
-    df = df[df[ALVO] > 100].copy()  #Remove o registro de R$ 19,52
-    #Zeros em area_terreno e fracao_ideal são dado ausente registrado como zero
-    df.loc[df["area_terreno"] == 0, "area_terreno"] = np.nan
-    df.loc[df["fracao_ideal"] == 0, "fracao_ideal"] = np.nan
-    return df
 
 
 def pre_processamento(escalar):
@@ -67,7 +42,6 @@ def pre_processamento(escalar):
 
 def modelo(regressor, escalar):
     pipe = Pipeline([("prep", pre_processamento(escalar)), ("reg", regressor)])
-    #Treina em log e devolve as predições em R$
     return TransformedTargetRegressor(regressor=pipe, func=np.log1p,
                                       inverse_func=np.expm1)
 
@@ -94,7 +68,7 @@ def main():
         linha = {"modelo": nome}
         for k in scoring:
             v = r[f"test_{k}"]
-            sinal = 1 if k == "r2" else -1  #As métricas de erro vêm negativas
+            sinal = 1 if k == "r2" else -1
             linha[f"{k}_media"] = sinal * v.mean()
             linha[f"{k}_desvio"] = v.std()
         linhas.append(linha)
