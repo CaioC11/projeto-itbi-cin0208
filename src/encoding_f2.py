@@ -127,14 +127,6 @@ class OrdinalOrdenado(BaseEstimator, TransformerMixin):
 
         return X
 
-class TargetEncodingForte(TargetEncodingSuave):
-    def __init__(self, colunas, suavizacao=100):
-        super().__init__(colunas, suavizacao)
-    """Target Encoding com suavizaÃ§Ã£o mais forte (padrÃ£o: 100)."""
-
-    def __init__(self, colunas, suavizacao=100):
-        super().__init__(colunas, suavizacao)
-
 class TargetEncodingSuave(BaseEstimator, TransformerMixin):
     """Target Encoding com suavizaÃ§Ã£o em direÃ§Ã£o Ã  mÃ©dia global do treino."""
 
@@ -246,3 +238,11 @@ class TratamentoFaltantes(BaseEstimator, TransformerMixin):
                     X[col] = X[col].fillna(mapa_bairro)
                 X[col] = X[col].fillna(self.mediana_global_[col])
             return X
+
+
+class TargetEncodingForte(TargetEncodingSuave):
+    """Target Encoding com suavização mais forte (padrão: 100)."""
+
+    def __init__(self, colunas, suavizacao=100):
+        super().__init__(colunas, suavizacao)
+
