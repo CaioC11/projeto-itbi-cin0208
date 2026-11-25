@@ -29,8 +29,11 @@ PASTA_SAIDA = RAIZ / "resultados" / "analise_f5"
 
 ARQUIVOS_PADRAO = [
     RAIZ / "resultados" / "experimentos.csv",
-    RAIZ / "resultados" / "f3_estagio1.csv",
+    RAIZ / "resultados" / "experimentos_f1_3.csv",
+    RAIZ / "resultados" / "experimentos_f3.csv",
+    RAIZ / "resultados" / "experimentos_f4.csv",
     RAIZ / "resultados" / "referencias_f5_3.csv",
+    RAIZ / "resultados" / "experimentos_f5.csv",
 ]
 
 CAMPOS = [
