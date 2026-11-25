@@ -56,11 +56,11 @@ def rodar(nome, override, passos, conjunto="completo", estrategia_num="median"):
 
 def main():
     print("=== F2-1: ENCODING (4 variantes) ===")
-    rodar("F2-1 Ordinal", {"encoding": "ordinal"},
+    rodar("F2-1 Ordinal", {"encoding": "ordinal_parcial"},
           [("ord", OrdinalOrdenado(ORDENS_ORDINAL)), ("oh", OneHotRaras(COLUNAS_NOMINAIS_ORDINAL))])
-    rodar("F2-1 Frequency", {"encoding": "frequency"},
+    rodar("F2-1 Frequency", {"encoding": "frequency_alta_card"},
           [("ord", OrdinalOrdenado(ORDEM_ACABAMENTO)), ("freq", FrequencyEncoding(COLUNAS_ALTA_CARDINALIDADE)), ("oh", OneHotRaras(COLUNAS_BAIXA_CARDINALIDADE))])
-    rodar("F2-1 Target Suave (10)", {"encoding": "target_suave_10"},
+    rodar("F2-1 Target Suave (10)", {"encoding": "target_suave_10_alta_card"},
           [("ord", OrdinalOrdenado(ORDEM_ACABAMENTO)), ("te", TargetEncodingSuave(COLUNAS_ALTA_CARDINALIDADE, 10)), ("oh", OneHotRaras(COLUNAS_BAIXA_CARDINALIDADE))])
     rodar("F2-1 Target Forte (100)", {"encoding": "target_forte_100"},
           [("ord", OrdinalOrdenado(ORDEM_ACABAMENTO)), ("te", TargetEncodingForte(COLUNAS_ALTA_CARDINALIDADE, 100)), ("oh", OneHotRaras(COLUNAS_BAIXA_CARDINALIDADE))])
@@ -84,7 +84,7 @@ def main():
     rodar("F1-2 remover_linhas", {"faltantes": "remover_linhas"}, PIPE_B0, conjunto="sem_faltantes")
     for est in ["mediana_bairro", "mediana_bairro_indicador", "sem_lat_lon", "area_terreno_tipo", "media"]:
         est_num = "mean" if est == "media" else "median"
-        rodar(f"F1-2 {est}", {"faltantes": est}, [("imp", TratamentoFaltantes(est))] + PIPE_B0, estrategia_num=est_num)
+        rodar(f"F1-2 {est}", {"faltantes": est, "encoding": "onehot_ord_acabamento" if est in ("mediana_bairro", "media") else "onehot"}, [("imp", TratamentoFaltantes(est))] + PIPE_B0, estrategia_num=est_num)
 
 
 if __name__ == "__main__":
