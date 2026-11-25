@@ -1,0 +1,7 @@
+comparacao,id_campeao,id_referencia,mae_campeao,mae_referencia,diferenca_mae,vitorias_folds,pareado,estatistica,p_valor,p_ajustado_holm,significativo_5pct
+Campeao G3 vs Baseline (B0),daafa462a0a2,13f56f8c8571,149804.25,173487.59,-23683.35,10/10,True,0.0,0.001953125,0.01171875,True
+Campeao G3 vs Melhor G2 (sem reamostragem),daafa462a0a2,40ff390453f0,149804.25,159938.47,-10134.22,10/10,True,0.0,0.001953125,0.01171875,True
+Campeao G3 vs Top-2 Geral (gaussian_noise),daafa462a0a2,4ca6eef60157,149804.25,150067.12,-262.87,6/10,True,26.0,0.921875,1.0,False
+Campeao G3 vs Top-3 Geral (random_over),daafa462a0a2,6cac2321c245,149804.25,150072.66,-268.41,5/10,True,24.0,0.76953125,1.0,False
+Campeao G3 vs Top-4 Geral (smoter),daafa462a0a2,2ac28a188d83,149804.25,150180.26,-376.01,4/10,True,24.0,0.76953125,1.0,False
+Campeao G3 vs Top-5 Geral (random_over),daafa462a0a2,9afc82770c03,149804.25,150201.81,-397.56,5/10,True,19.0,0.431640625,1.0,False

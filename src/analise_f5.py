@@ -1,4 +1,4 @@
-
+﻿
 import argparse
 import json
 from pathlib import Path
@@ -34,6 +34,7 @@ ARQUIVOS_PADRAO = [
     RAIZ / "resultados" / "experimentos_f4.csv",
     RAIZ / "resultados" / "referencias_f5_3.csv",
     RAIZ / "resultados" / "experimentos_f5.csv",
+    RAIZ / "resultados" / "experimentos_f4_5.csv",
 ]
 
 CAMPOS = [
@@ -620,3 +621,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
