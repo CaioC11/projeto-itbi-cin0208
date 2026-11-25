@@ -167,10 +167,10 @@ def salvar_resultado(resultado, saida=SAIDA):
         anterior = pd.read_csv(saida)
 
         if "chave" in anterior.columns:
-            if resultado["chave"] in anterior["chave"].astype(str).values:
-                raise ValueError(
-                    "Experimento ja registrado no CSV"
-                )
+            chave = resultado["chave"]
+            anterior = anterior[
+                anterior["chave"].astype(str) != str(chave)
+            ]
 
         colunas = list(
             dict.fromkeys(
